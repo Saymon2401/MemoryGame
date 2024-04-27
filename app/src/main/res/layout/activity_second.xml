@@ -102,13 +102,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:id="@+id/card1"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img1"
@@ -117,14 +117,22 @@
                     android:src="@drawable/img1"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card2"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
                 app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img2"
@@ -133,14 +141,21 @@
                     android:src="@drawable/img3"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card3"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img3"
@@ -149,19 +164,26 @@
                     android:src="@drawable/img5"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/brain3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:id="@+id/card4"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img4"
@@ -170,14 +192,21 @@
                     android:src="@drawable/img2"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card5"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img5"
@@ -186,14 +215,21 @@
                     android:src="@drawable/img4"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain5"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card6"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img6"
@@ -202,19 +238,26 @@
                     android:src="@drawable/img6"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/brain6"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:id="@+id/card7"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img7"
@@ -223,14 +266,21 @@
                     android:src="@drawable/img3"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain7"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card8"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img8"
@@ -239,14 +289,21 @@
                     android:src="@drawable/img5"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain8"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card9"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img9"
@@ -255,19 +312,26 @@
                     android:src="@drawable/img2"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/brain9"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:id="@+id/card10"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img10"
@@ -276,14 +340,21 @@
                     android:src="@drawable/img6"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain10"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card11"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img11"
@@ -292,14 +363,21 @@
                     android:src="@drawable/img4"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/brain11"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/card12"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/purplestart"
-                app:cardCornerRadius="10dp"
+                android:background="@drawable/startcolor"
+                android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/img12"
@@ -308,7 +386,14 @@
                     android:src="@drawable/img1"
                     android:visibility="invisible"
                     android:layout_gravity="center"/>
-            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/brain12"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/brain_close"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
     <Button
