@@ -1,7 +1,10 @@
 package com.example.memorygame
 
+import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Vibrator
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -19,7 +22,9 @@ class MainActivity : AppCompatActivity(),Animation.AnimationListener {
     var animationend:Animation? = null
     var images:List<Int>? = null
     var image:List<Int>? = null
-
+    lateinit var click: MediaPlayer
+    lateinit var backSoud: MediaPlayer
+    var onOrOff = true
     var card1 = true
     var count:Int? = 0
 
@@ -27,6 +32,14 @@ class MainActivity : AppCompatActivity(),Animation.AnimationListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //click
+        click = MediaPlayer.create(this,R.raw.click)
+        backSoud = MediaPlayer.create(this,R.raw.backsound)
+        backSoud.isLooping = true
+        backSoud.setVolume(0.5f,0.5f)
+        backSoud.start()
+
         images = listOf(
             R.drawable.img1,R.drawable.img2,R.drawable.img3,R.drawable.img4,R.drawable.img5,R.drawable.img6
         )
@@ -39,12 +52,27 @@ class MainActivity : AppCompatActivity(),Animation.AnimationListener {
         animationstart?.setAnimationListener(this)
         binding.card1.startAnimation(animationstart)
 
-
         binding.nextBtn.setOnClickListener {
+            backSoud.stop()
+            backSoud.release()
+            click.start()
             card1 = true
             count = 0
+            intent.putExtra("sound",onOrOff)
             var intent = Intent(this,SecondActivity::class.java)
             startActivity(intent)
+        }
+        binding.sound.setOnClickListener {
+            click.start()
+            if (backSoud.isPlaying){
+                backSoud.pause()
+                binding.soundon.visibility = View.INVISIBLE
+                binding.soundoff.visibility = View.VISIBLE
+            }else{
+                backSoud.start()
+                binding.soundon.visibility = View.VISIBLE
+                binding.soundoff.visibility = View.INVISIBLE
+            }
         }
 
 

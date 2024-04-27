@@ -8,6 +8,25 @@
     android:background="@color/black"
     android:padding="10dp"
     tools:context=".SecondActivity">
+    <RelativeLayout
+        android:id="@+id/sound"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/soundon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/soundon"/>
+        <ImageView
+            android:id="@+id/soundoff"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="invisible"
+            android:src="@drawable/soundoff"/>
+    </RelativeLayout>
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"

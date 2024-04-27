@@ -1,9 +1,12 @@
 package com.example.memorygame
 
+import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
+import android.os.Vibrator
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
@@ -31,7 +34,13 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     private val openedCards = mutableListOf<Int?>()     //Открытые карты
     private val timeList = mutableListOf<String?>()     //Время секундомера
     private val wrongList = mutableListOf<Int?>()       //Ошибки
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var click: MediaPlayer
+    private lateinit var gamewon: MediaPlayer
+    private lateinit var rightchoose: MediaPlayer
+    private lateinit var wrongtchoose: MediaPlayer
 
+    var soundlike = true
     var wrongCard = false            // Когда выбран два неправильных карт
     var cardIndex:Int? = null        // последняя нажатая карта
     var lastIndex:Int? = null        // первая нажатая карта
@@ -49,6 +58,18 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        mediaPlayer = MediaPlayer.create(this,R.raw.backsound)
+        click = MediaPlayer.create(this,R.raw.click)
+        gamewon = MediaPlayer.create(this,R.raw.gamewon)
+        rightchoose = MediaPlayer.create(this,R.raw.rightchoose)
+        wrongtchoose = MediaPlayer.create(this,R.raw.wrongchoose)
+
+        mediaPlayer.isLooping = true
+        click.setVolume(0.3f,0.3f)
+        mediaPlayer.start()
+
 
         //Добавлякм карты и картинки в массив
         cardViews = listOf(
@@ -75,6 +96,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
 
         cardViews.forEachIndexed{ i , card ->
             card.setOnClickListener {
+                click.start()
                 // Если карта уже нажата не дает второй раз нажать , Невозможно сразу три раза открыть карту
                 if (!clickEnabled || openedCards.contains(i) && isAnimationRunning) return@setOnClickListener
                 cardIndex = i
@@ -88,6 +110,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         }
         //кнопка назад
         binding.cancelBtn.setOnClickListener {
+            click.start()
             wrongCard = false
             cardIndex = null
             lastIndex = null
@@ -105,6 +128,8 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         }
         //кнопка перезагрузки карт
         binding.restartBtn.setOnClickListener {
+//            gamewon.stop()
+            click.start()
             lastIndex = null
             cardIndex = null
             wrongCard = false
@@ -125,6 +150,19 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                 changeColor()
             }
         }
+        //Кнопка звука
+        binding.sound.setOnClickListener{
+            click.start()
+            if (mediaPlayer.isPlaying){
+                mediaPlayer.pause()
+                binding.soundon.visibility = View.INVISIBLE
+                binding.soundoff.visibility = View.VISIBLE
+            }else{
+                mediaPlayer.start()
+                binding.soundon.visibility = View.VISIBLE
+                binding.soundoff.visibility = View.INVISIBLE
+            }
+        }
 
         animationend?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -138,12 +176,15 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                             if (imgList[cardIndex!!].drawable.constantState == imgList[lastIndex!!].drawable.constantState){
                                 cardViews[cardIndex!!].setBackgroundDrawable(ContextCompat.getDrawable(this@SecondActivity,R.drawable.startyellow))
                                 cardViews[lastIndex!!].setBackgroundDrawable(ContextCompat.getDrawable(this@SecondActivity,R.drawable.startyellow))
+                                if (soundlike) rightchoose.start() else soundlike = true
                             }
                             //если карты не совподают то становится красным и закрываются обратно
                             if(imgList[cardIndex!!].drawable.constantState != imgList[lastIndex!!].drawable.constantState){
                                 cardViews[cardIndex!!].setBackgroundDrawable(ContextCompat.getDrawable(this@SecondActivity,R.drawable.startred))
                                 cardViews[lastIndex!!].setBackgroundDrawable(ContextCompat.getDrawable(this@SecondActivity,R.drawable.startred))
                                 clickEnabled = false //блокировка обработчик нажатий
+                                wrongtchoose.start()
+                                vibrate(vibrator,200)
                                 Handler().postDelayed({ // Не дает нажать когда карточки красные
                                     clickEnabled = true // Разблокировка обработчики нажатий
                                 }, 500)
@@ -151,11 +192,13 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                                 cardViews[lastIndex!!].startAnimation(animationstart)
                                 wrongCard = true
                                 falseCard++
+                                soundlike = false
                             }
                         }
                     }
                 }
                 if (allCardTrue()){ //Когда все карты открыты
+                    gamewon.start()
                     binding.secund.stop() //остановка секундомера
                     elapsedTime = binding.secund.base - SystemClock.elapsedRealtime()
                     min = (elapsedTime / 60000)*-1 // минута
@@ -200,6 +243,11 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {
             }
         })
+    }
+    private fun vibrate(vibrator: Vibrator, duration: Long) {
+        if (vibrator.hasVibrator()) {
+            vibrator.vibrate(duration)
+        }
     }
     override fun onAnimationStart(animation: Animation?) {
         isAnimationRunning = false
@@ -270,6 +318,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                 i.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.startcolor))
                 i.startAnimation(animationend)
             }
+            rightchoose.start()
             change2 = false
         }
     }
@@ -294,10 +343,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     }
     //Проверяет все карты ли открыты и желтые
     fun allCardTrue():Boolean{
-        val allCardsOpened = openedCards.size == cardViews.size / 2
-        val allCardsYellow = cardViews.all { card ->
-            card.background == ContextCompat.getDrawable(this@SecondActivity, R.drawable.startyellow)
-        }
-        return allCardsOpened && allCardsYellow
+        val allCardsOpened = openedCards.size == 12
+        return allCardsOpened
     }
 }
