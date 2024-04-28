@@ -5,9 +5,40 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@drawable/backgroud"
     android:padding="10dp"
     tools:context=".SecondActivity">
+    <TextView
+        android:id="@+id/level_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Уровень"
+        android:textColor="@color/white"
+        android:fontFamily="@font/medium"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/level"
+        app:cardCornerRadius="100dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/level_txt"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:textSize="40sp"/>
+    </RelativeLayout>
+
+
     <RelativeLayout
         android:id="@+id/sound"
         android:layout_width="50dp"
@@ -28,12 +59,14 @@
             android:src="@drawable/soundoff"/>
     </RelativeLayout>
     <ImageView
+        android:id="@+id/brain_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/brain_icon"
         android:layout_marginRight="5dp"
         android:layout_marginTop="3dp"
         app:layout_constraintRight_toLeftOf="@id/memoryGame_txt"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
         android:id="@+id/memoryGame_txt"
@@ -42,68 +75,92 @@
         android:text="Memory\nGame"
         android:textColor="@color/white"
         android:textAllCaps="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:fontFamily="@font/medium"
+        app:layout_constraintLeft_toRightOf="@id/brain_icon"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record time"
-        android:textSize="20sp"
-        android:textColor="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@id/time"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
+        android:fontFamily="@font/medium"
+        android:text="Рекорд"
         android:textColor="@color/white"
-        android:layout_marginBottom="30dp"
+        android:textSize="15sp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@id/time_txt"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/next_btn"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/time_txt"
+        app:layout_constraintStart_toEndOf="@+id/time_txt"
+        app:layout_constraintTop_toTopOf="@+id/time_txt">
+
+        <TextView
+            android:id="@+id/level_rec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:fontFamily="@font/medium"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/time_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/startred"
+        android:padding="5dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/secund"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-    <TextView
-        android:id="@+id/wrong_rec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wrong: "
-        android:textColor="@color/yellow"
-        app:layout_constraintTop_toBottomOf="@id/time"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-    <TextView
-        android:id="@+id/wrong_rectime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@id/wrong_rec"
-        app:layout_constraintTop_toBottomOf="@id/time"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wrong: "
-        android:textColor="@color/yellow"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintRight_toLeftOf="@id/wrong"
-        app:layout_constraintBottom_toTopOf="@id/grid"/>
-    <TextView
-        android:id="@+id/wrong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/medium"
+            android:text="00:00"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrong_back"
+        android:layout_width="75dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginRight="10dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/grid"/>
+        android:background="@drawable/love"
+        android:padding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/secund"
+        app:layout_constraintBottom_toBottomOf="@id/secund"
+        app:layout_constraintRight_toRightOf="parent">
+        <TextView
+            android:id="@+id/wrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:fontFamily="@font/medium"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+    </RelativeLayout>
     <Chronometer
         android:id="@+id/secund"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="50sp"
+        android:gravity="center"
+        android:padding="3dp"
+        android:background="@drawable/endcolor"
+        android:fontFamily="@font/medium"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/grid"
         app:layout_constraintLeft_toLeftOf="parent"/>
@@ -420,9 +477,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Restart"
+        android:text="Начать заново"
         android:textAllCaps="false"
         android:textSize="20sp"
+        android:fontFamily="@font/medium"
         android:background="@drawable/next_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/cancelBtn"
@@ -432,9 +490,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Cancel"
+        android:text="Назад"
         android:textAllCaps="false"
         android:textSize="20sp"
+        android:fontFamily="@font/medium"
         android:background="@drawable/next_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

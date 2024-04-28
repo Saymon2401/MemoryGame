@@ -31,9 +31,10 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     private lateinit var cardViews: List<RelativeLayout> // для карт
     private lateinit var imgList: List<ImageView>       //массив для изображений открытых карт
     private lateinit var brainClose: List<ImageView>    //массив для картинки закрытых карт
+    private lateinit var images: List<Int>    //массив для картинки закрытых карт
     private val openedCards = mutableListOf<Int?>()     //Открытые карты
+    private val levelList = mutableListOf<Int?>()     //Уровень
     private val timeList = mutableListOf<String?>()     //Время секундомера
-    private val wrongList = mutableListOf<Int?>()       //Ошибки
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var click: MediaPlayer
     private lateinit var gamewon: MediaPlayer
@@ -46,7 +47,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     var lastIndex:Int? = null        // первая нажатая карта
     var change = false               // Для открытия начало карт
     var change2 = false              // Для закрытия начало карт
-    var falseCard = 0                // Считается сколько сделали неправильных карт
+    var falseCard = 10               // Считается сколько сделали неправильных карт
     var elapsedTime:Long = 0         // Elapsed
     var min:Long? = null             // минута
     var sec:Long? = null             // секунд
@@ -54,6 +55,8 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     var isTimerStarted = false       // Чтоб секундомер стартанул при нажатий на CardView
     var isAnimationRunning = true    // Чтоб не смог нажать подряд три раза
     var clickEnabled = true          // Вначале чтоб не смог нажать когда все желтые
+    var levelCount = 1
+    var hurt = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondBinding.inflate(layoutInflater)
@@ -81,14 +84,20 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         brainClose = listOf(
             binding.brain1, binding.brain2, binding.brain3, binding.brain4, binding.brain5, binding.brain6, binding.brain7, binding.brain8, binding.brain9, binding.brain10, binding.brain11, binding.brain12
         )
-         val images = listOf(
+        images = listOf(
             R.drawable.img1, R.drawable.img1, R.drawable.img2, R.drawable.img2, R.drawable.img3, R.drawable.img3, R.drawable.img4, R.drawable.img4, R.drawable.img5, R.drawable.img5, R.drawable.img6, R.drawable.img6
         )
 
         // запускаем первоначальный показ карт
+        var shuffledImg = images.shuffled() // разбрасывает
+        cardViews.forEachIndexed{index, cardView ->
+            imgList[index].setImageResource(shuffledImg[index])
+            cardView.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.startcolor))
+        }
         GlobalScope.launch {
             changeColor()
         }
+
         //Анимаций
         animationstart = AnimationUtils.loadAnimation(this,R.anim.animstart)
         animationend = AnimationUtils.loadAnimation(this,R.anim.animend)
@@ -128,27 +137,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         }
         //кнопка перезагрузки карт
         binding.restartBtn.setOnClickListener {
-//            gamewon.stop()
-            click.start()
-            lastIndex = null
-            cardIndex = null
-            wrongCard = false
-            isTimerStarted = false
-            falseCard = 0
-            openedCards.clear()
-            binding.secund.stop()
-            binding.secund.base = SystemClock.elapsedRealtime()
-            binding.wrong.text = "0"
-            isAnimationRunning = true
-            var shuffledImg = images.shuffled() // разбрасывает
-            cardViews.forEachIndexed{index, cardView ->
-                imgList[index].setImageResource(shuffledImg[index])
-                cardView.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.startcolor))
-            }
-
-            GlobalScope.launch {
-                changeColor()
-            }
+            restartBtn()
         }
         //Кнопка звука
         binding.sound.setOnClickListener{
@@ -163,6 +152,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                 binding.soundoff.visibility = View.INVISIBLE
             }
         }
+
 
         animationend?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -191,11 +181,17 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                                 cardViews[cardIndex!!].startAnimation(animationstart)
                                 cardViews[lastIndex!!].startAnimation(animationstart)
                                 wrongCard = true
-                                falseCard++
+                                hurt = true
+                                falseCard--
+                                binding.wrongBack.startAnimation(animationstart)
+                                binding.wrong.setText(falseCard.toString())
                                 soundlike = false
                             }
                         }
                     }
+                }
+                if (falseCard==0){
+                    restartBtn()
                 }
                 if (allCardTrue()){ //Когда все карты открыты
                     gamewon.start()
@@ -203,12 +199,8 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                     elapsedTime = binding.secund.base - SystemClock.elapsedRealtime()
                     min = (elapsedTime / 60000)*-1 // минута
                     sec = (((elapsedTime / 1000) % 60)*-1) //секунд
-                    wrongList.add(falseCard) //добавляем в массив сколько было ошибок
                     timeList.add("$min:$sec") //добавляем время остановки секундомера
                     var timeeList = timeList
-                    var wronggList = wrongList
-                    Log.d("time","TimeList: $timeeList")
-                    Log.d("wrong","WrongList: $wronggList")
                     //Обрезка времени Activity
                     var timeRec = binding.time.text
                     var doubleDotRec = timeRec.indexOf(":")
@@ -223,21 +215,38 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
                         { //если Рекорд пустая то присваиваем нынешную
                             recordTime = "0$minSub:$secSub"
                             binding.time.text = recordTime
-                            binding.wrongRectime.text = wrongList[i].toString()
                         }
                         else if ((minRec == minSub) && (secRec.toInt() >= secSub!!.toInt()))
                         { // если минута нулевая то проверяется секунда
                             recordTime = "0$minSub:$secSub"
                             binding.time.text = recordTime
-                            binding.wrongRectime.text = wrongList[i].toString()
                         }
                         else if (minRec.toInt() > minSub!!.toInt())
                         {//в противном случае проверяется минута
                             recordTime = "0$minSub:$secSub"
                             binding.time.text = recordTime
-                            binding.wrongRectime.text = wrongList[i].toString()
                         }
                     }
+                    levelCount++
+                    levelList.add(levelCount)
+                    if (levelCount>=10){
+                        var level = "$levelCount"
+                        binding.level.setText(level)
+                    }else{
+                        var level = "0$levelCount"
+                        binding.level.setText(level)
+                    }
+                    if (binding.levelRec.text == "0"){
+                        binding.levelRec.setText("2")
+                    }else{
+                        var numInd = 2
+                        var num = ((binding.levelRec.text).toString()).toInt()
+                        for (i in levelList){
+                            if (i!!>=num) numInd = i
+                        }
+                        binding.levelRec.setText(numInd.toString())
+                    }
+                    continueFunc()
                 }
             }
             override fun onAnimationRepeat(animation: Animation?) {
@@ -253,6 +262,10 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         isAnimationRunning = false
     }
     override fun onAnimationEnd(animation: Animation?) {
+        if (hurt){
+            binding.wrongBack.startAnimation(animationend)
+            hurt = false
+        }
             isAnimationRunning = true
             if (cardIndex!=null){
                 for (i in cardViews.indices){
@@ -271,8 +284,6 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
             }
         // если карты не совпали
         if (wrongCard){
-            val wrongcard = falseCard.toString() // Добавляем в массив сколько пар карт были красные
-            binding.wrong.text = wrongcard //Меняем число ошибок
             wrongCard = false
             openedCards.remove(lastIndex) //удаляем последние красных карт из Массива открытых карт
             openedCards.remove(cardIndex)
@@ -325,6 +336,50 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
 
     override fun onAnimationRepeat(animation: Animation?) {
 
+    }
+    fun continueFunc(){
+        lastIndex = null
+        cardIndex = null
+        wrongCard = false
+        isTimerStarted = false
+        openedCards.clear()
+        binding.secund.stop()
+        binding.secund.base = SystemClock.elapsedRealtime()
+        isAnimationRunning = true
+        var shuffledImg = images.shuffled() // разбрасывает
+        cardViews.forEachIndexed{index, cardView ->
+            imgList[index].setImageResource(shuffledImg[index])
+            cardView.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.startcolor))
+        }
+
+        GlobalScope.launch {
+            changeColor()
+        }
+    }
+    fun restartBtn(){
+        click.start()
+        levelCount = 1
+        lastIndex = null
+        cardIndex = null
+        wrongCard = false
+        isTimerStarted = false
+        falseCard = 10
+        openedCards.clear()
+        binding.secund.stop()
+        binding.secund.base = SystemClock.elapsedRealtime()
+        binding.wrong.text = "10"
+        binding.level.text = "01"
+        binding.time.text = "00:00"
+        isAnimationRunning = true
+        timeList.clear()
+        var shuffledImg = images.shuffled() // разбрасывает
+        cardViews.forEachIndexed{index, cardView ->
+            imgList[index].setImageResource(shuffledImg[index])
+            cardView.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.startcolor))
+        }
+        GlobalScope.launch {
+            changeColor()
+        }
     }
     //Функция для первого показа карт открытым
     suspend fun changeColor() {
