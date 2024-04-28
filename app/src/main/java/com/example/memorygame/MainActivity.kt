@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity(),Animation.AnimationListener {
         backSoud = MediaPlayer.create(this,R.raw.backsound)
         backSoud.isLooping = true
         backSoud.setVolume(0.5f,0.5f)
-        backSoud.start()
 
         images = listOf(
             R.drawable.img1,R.drawable.img2,R.drawable.img3,R.drawable.img4,R.drawable.img5,R.drawable.img6
@@ -97,7 +96,18 @@ class MainActivity : AppCompatActivity(),Animation.AnimationListener {
 
         })
     }
-
+    override fun onResume() {
+        super.onResume()
+        backSoud = MediaPlayer.create(this, R.raw.backsound) // Инициализируем MediaPlayer заново
+        backSoud.isLooping = true
+        backSoud.setVolume(0.5f, 0.5f)
+        backSoud.start() // Запускаем проигрывание музыки
+    }
+    override fun onPause() {
+        super.onPause()
+        backSoud.stop()
+        backSoud.release()
+    }
     override fun onAnimationStart(animation: Animation?) {
 
     }

@@ -47,7 +47,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
     var lastIndex:Int? = null        // первая нажатая карта
     var change = false               // Для открытия начало карт
     var change2 = false              // Для закрытия начало карт
-    var falseCard = 10               // Считается сколько сделали неправильных карт
+    var falseCard = 3               // Считается сколько сделали неправильных карт
     var elapsedTime:Long = 0         // Elapsed
     var min:Long? = null             // минута
     var sec:Long? = null             // секунд
@@ -71,7 +71,7 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
 
         mediaPlayer.isLooping = true
         click.setVolume(0.3f,0.3f)
-        mediaPlayer.start()
+//        mediaPlayer.start()
 
 
         //Добавлякм карты и картинки в массив
@@ -253,6 +253,18 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
             }
         })
     }
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer = MediaPlayer.create(this, R.raw.backsound) // Инициализируем MediaPlayer заново
+        mediaPlayer.isLooping = true
+        mediaPlayer.setVolume(0.5f, 0.5f)
+        mediaPlayer.start() // Запускаем проигрывание музыки
+    }
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.stop()
+        mediaPlayer.release()
+    }
     private fun vibrate(vibrator: Vibrator, duration: Long) {
         if (vibrator.hasVibrator()) {
             vibrator.vibrate(duration)
@@ -346,6 +358,8 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         binding.secund.stop()
         binding.secund.base = SystemClock.elapsedRealtime()
         isAnimationRunning = true
+        falseCard = 3
+        binding.wrong.text = "3"
         var shuffledImg = images.shuffled() // разбрасывает
         cardViews.forEachIndexed{index, cardView ->
             imgList[index].setImageResource(shuffledImg[index])
@@ -363,11 +377,12 @@ class SecondActivity : AppCompatActivity(),Animation.AnimationListener {
         cardIndex = null
         wrongCard = false
         isTimerStarted = false
-        falseCard = 10
+        falseCard = 3
+
         openedCards.clear()
         binding.secund.stop()
         binding.secund.base = SystemClock.elapsedRealtime()
-        binding.wrong.text = "10"
+        binding.wrong.text = "3"
         binding.level.text = "01"
         binding.time.text = "00:00"
         isAnimationRunning = true
